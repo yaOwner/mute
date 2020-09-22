@@ -70,27 +70,29 @@ async def __check_mute(ctx, member: discord.Member = None):
 
         await ctx.send(embed = emb)
 
-    elif mute_role in member.roles:
+    elif not mute_role in member.roles:
         emb = discord.Embed(description = 'Пользователь не в муте!')
         emb.set_author(name = '{}'.format(ctx.author), icon_url = '{}'.format(ctx.author.avatar_url))
 
         await ctx.send(embed = emb)
+        
+    else:
 
-    for x in muted.find({"_id": member.id}):
-        time = x['time']
+        for x in muted.find({"_id": member.id}):
+            time = x['time']
 
-        h = int(time) // 3600
-        m = (int(time) - h * 3600) // 60
-        s = int(time) % 60
-        if h < 10:
-            h = f"0{h}"
-        if m < 10:
-            m = f"0{m}"
-        if s < 10:
-            s = f"0{s}"
-        time_reward = f"{h} часа {m} минут {s} секунд"
+            h = int(time) // 3600
+            m = (int(time) - h * 3600) // 60
+            s = int(time) % 60
+            if h < 10:
+                h = f"0{h}"
+            if m < 10:
+                m = f"0{m}"
+            if s < 10:
+                s = f"0{s}"
+            time_reward = f"{h} часа {m} минут {s} секунд"
 
-        emb = discord.Embed(description = f'Мут **{member}** закончится через: `{time_reward}`')
-        emb.set_author(name = '{}'.format(ctx.author), icon_url = '{}'.format(ctx.author.avatar_url))
+            emb = discord.Embed(description = f'Мут **{member}** закончится через: `{time_reward}`')
+            emb.set_author(name = '{}'.format(ctx.author), icon_url = '{}'.format(ctx.author.avatar_url))
 
-        await ctx.send(embed = emb)
+            await ctx.send(embed = emb)
